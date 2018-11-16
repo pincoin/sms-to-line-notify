@@ -20,20 +20,28 @@ public class Receiver extends BroadcastReceiver {
 
         if ("android.provider.Telephony.SMS_RECEIVED".equals(intent.getAction())) {
             Bundle bundle = intent.getExtras();
-            Object[] messages = (Object[]) bundle.get("pdus");
-            SmsMessage[] smsMessage = new SmsMessage[messages.length];
 
-            for (int i = 0; i < messages.length; i++) {
-                smsMessage[i] = SmsMessage.createFromPdu((byte[]) messages[i]);
+            if (bundle != null) {
+                Object[] messages = (Object[]) bundle.get("pdus");
+
+                if (messages != null) {
+                    SmsMessage[] smsMessage = new SmsMessage[messages.length];
+
+                    for (int i = 0; i < messages.length; i++) {
+                        smsMessage[i] = SmsMessage.createFromPdu((byte[]) messages[i]);
+                    }
+
+                    String phone = smsMessage[0].getOriginatingAddress();
+
+                    if (phone != null
+                            && (phone.equals(KOOKMIN) || phone.equals(NONGHUP) || phone.equals(SHINHAN) || phone.equals(WOORI))) {
+
+                        phone = "은행";
+
+                        asyncTask.execute(phone + " " + smsMessage[0].getMessageBody());
+                    }
+                }
             }
-
-            String phone = smsMessage[0].getOriginatingAddress();
-
-            if (phone.equals(KOOKMIN) || phone.equals(NONGHUP) || phone.equals(SHINHAN) || phone.equals(WOORI)) {
-                phone = "은행";
-            }
-
-            asyncTask.execute(phone + " " + smsMessage[0].getMessageBody());
         } else if ("android.intent.action.BATTERY_LOW".equals(intent.getAction())) {
             asyncTask.execute("배터리 부족");
         } else if ("android.intent.action.BATTERY_OKAY".equals(intent.getAction())) {
