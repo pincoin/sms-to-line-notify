@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Receiver extends BroadcastReceiver {
     private static final String TAG = "Receiver";
@@ -32,15 +36,82 @@ public class Receiver extends BroadcastReceiver {
                     }
 
                     String phone = smsMessage[0].getOriginatingAddress();
+                    String pattern;
+                    Pattern r;
+                    Matcher m;
 
                     if (phone != null) {
                         switch (phone) {
                             case KOOKMIN:
+                                pattern = "\\[KB](.*)\\s.*\\s(.*)\\s(.*)\\s(.*)\\s잔액(.*)";
+                                r = Pattern.compile(pattern);
+                                m = r.matcher(smsMessage[0].getMessageBody());
+
+                                if (m.find()) {
+                                    String message = String.format("[국민]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                            m.group(1),
+                                            m.group(2),
+                                            m.group(3),
+                                            m.group(4),
+                                            m.group(5));
+                                    asyncTask.execute(message);
+                                } else {
+                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                }
+                                break;
                             case NONGHUP:
+                                pattern = "농협 (\\D*)([,\\d]+)원\\s(\\d\\d/\\d\\d \\d\\d:\\d\\d) [\\d-*]+ (.*) 잔액(.*)원";
+                                r = Pattern.compile(pattern);
+                                m = r.matcher(smsMessage[0].getMessageBody());
+
+                                if (m.find()) {
+                                    String message = String.format("[농협]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                            m.group(3),
+                                            m.group(4),
+                                            m.group(1),
+                                            m.group(2),
+                                            m.group(5));
+                                    asyncTask.execute(message);
+                                } else {
+                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                }
+                                break;
                             case SHINHAN:
+                                pattern = "신한(.*)\\s.*\\s(.*)[ ]+(.*)\\s잔액[ ]+(.*)\\s+(.*)";
+                                r = Pattern.compile(pattern);
+                                m = r.matcher(smsMessage[0].getMessageBody());
+
+                                if (m.find()) {
+                                    String message = String.format("[신한]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                            m.group(1),
+                                            m.group(5),
+                                            m.group(2),
+                                            m.group(3),
+                                            m.group(4));
+                                    asyncTask.execute(message);
+                                } else {
+                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                }
+                                break;
                             case WOORI:
-                                phone = "은행";
-                                asyncTask.execute(phone + " " + smsMessage[0].getMessageBody());
+                                pattern = "우리 (.*)\\s.*\\s(.*) (.*)원\\s(.*)";
+                                r = Pattern.compile(pattern);
+                                m = r.matcher(smsMessage[0].getMessageBody());
+
+                                if (m.find()) {
+                                    String message = String.format("[우리]\n일시: %s\n이름: %s\n입출: %s\n금액: %s",
+                                            m.group(1),
+                                            m.group(4),
+                                            m.group(2),
+                                            m.group(3));
+                                    asyncTask.execute(message);
+                                } else {
+                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                }
+                                break;
+                            default:
+                                asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                break;
                         }
                     }
                 }
