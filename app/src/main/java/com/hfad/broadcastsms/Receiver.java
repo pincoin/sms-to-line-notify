@@ -33,12 +33,15 @@ public class Receiver extends BroadcastReceiver {
 
                     String phone = smsMessage[0].getOriginatingAddress();
 
-                    if (phone != null
-                            && (phone.equals(KOOKMIN) || phone.equals(NONGHUP) || phone.equals(SHINHAN) || phone.equals(WOORI))) {
-
-                        phone = "은행";
-
-                        asyncTask.execute(phone + " " + smsMessage[0].getMessageBody());
+                    if (phone != null) {
+                        switch (phone) {
+                            case KOOKMIN:
+                            case NONGHUP:
+                            case SHINHAN:
+                            case WOORI:
+                                phone = "은행";
+                                asyncTask.execute(phone + " " + smsMessage[0].getMessageBody());
+                        }
                     }
                 }
             }
