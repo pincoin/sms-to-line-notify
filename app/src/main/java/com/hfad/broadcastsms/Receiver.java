@@ -18,6 +18,8 @@ public class Receiver extends BroadcastReceiver {
     private static final String SHINHAN = "15778000";
     private static final String WOORI = "15885000";
 
+    private static final String MESSAGE_FORMAT = "[%s]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         LineNotifyAsyncTask asyncTask = new LineNotifyAsyncTask();
@@ -48,7 +50,8 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format("[국민]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                    String message = String.format(MESSAGE_FORMAT,
+                                            "국민",
                                             m.group(1),
                                             m.group(2),
                                             m.group(3),
@@ -65,7 +68,8 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format("[농협]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                    String message = String.format(MESSAGE_FORMAT,
+                                            "농협",
                                             m.group(3),
                                             m.group(4),
                                             m.group(1),
@@ -82,7 +86,8 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format("[신한]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s",
+                                    String message = String.format(MESSAGE_FORMAT,
+                                            "신한",
                                             m.group(1),
                                             m.group(5),
                                             m.group(2),
@@ -94,16 +99,18 @@ public class Receiver extends BroadcastReceiver {
                                 }
                                 break;
                             case WOORI:
-                                pattern = "우리 (.*)\\s.*\\s(.*) (.*)원\\s(.*)";
+                                pattern = "우리 (.*)\\s.*\\s(.*) (.*)원\\s(.*)\\s잔액[ ]+(.*)원";
                                 r = Pattern.compile(pattern);
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format("[우리]\n일시: %s\n이름: %s\n입출: %s\n금액: %s",
+                                    String message = String.format(MESSAGE_FORMAT,
+                                            "우리",
                                             m.group(1),
                                             m.group(4),
                                             m.group(2),
-                                            m.group(3));
+                                            m.group(3),
+                                            m.group(5));
                                     asyncTask.execute(message);
                                 } else {
                                     asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
