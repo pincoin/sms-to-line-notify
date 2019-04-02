@@ -13,9 +13,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "LINE_NOTIFY_TOKEN", LINE_NOTIFY_TOKEN
+            buildConfigField "String", "PAYMENT_NOTIFY_URL", PAYMENT_NOTIFY_URL
+            buildConfigField "String", "PAYMENT_NOTIFY_TOKEN", PAYMENT_NOTIFY_TOKEN
         }
         release {
             buildConfigField "String", "LINE_NOTIFY_TOKEN", LINE_NOTIFY_TOKEN
+            buildConfigField "String", "PAYMENT_NOTIFY_URL", PAYMENT_NOTIFY_URL
+            buildConfigField "String", "PAYMENT_NOTIFY_TOKEN", PAYMENT_NOTIFY_TOKEN
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +21,8 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LineNotifyAsyncTask asyncTask = new LineNotifyAsyncTask();
+        LineNotifyAsyncTask lineNotifyAsyncTask = new LineNotifyAsyncTask();
+        PaymentNotifyAsyncTask paymentNotifyAsyncTask = new PaymentNotifyAsyncTask();
 
         if ("android.provider.Telephony.SMS_RECEIVED".equals(intent.getAction())) {
             Bundle bundle = intent.getExtras();
@@ -57,9 +57,11 @@ public class Receiver extends BroadcastReceiver {
                                             m.group(3),
                                             m.group(4),
                                             m.group(5));
-                                    asyncTask.execute(message);
+
+                                    lineNotifyAsyncTask.execute(message);
+                                    paymentNotifyAsyncTask.execute("0", m.group(1), m.group(2), m.group(3), m.group(4), m.group(5));
                                 } else {
-                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                                 }
                                 break;
                             case NONGHUP:
@@ -75,9 +77,11 @@ public class Receiver extends BroadcastReceiver {
                                             m.group(1),
                                             m.group(2),
                                             m.group(5));
-                                    asyncTask.execute(message);
+
+                                    lineNotifyAsyncTask.execute(message);
+                                    paymentNotifyAsyncTask.execute("1", m.group(3), m.group(4), m.group(1), m.group(2), m.group(5));
                                 } else {
-                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                                 }
                                 break;
                             case SHINHAN:
@@ -93,9 +97,11 @@ public class Receiver extends BroadcastReceiver {
                                             m.group(2),
                                             m.group(3),
                                             m.group(4));
-                                    asyncTask.execute(message);
+
+                                    lineNotifyAsyncTask.execute(message);
+                                    paymentNotifyAsyncTask.execute("2", m.group(1), m.group(5), m.group(2), m.group(3), m.group(4));
                                 } else {
-                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                                 }
                                 break;
                             case WOORI:
@@ -111,28 +117,30 @@ public class Receiver extends BroadcastReceiver {
                                             m.group(2),
                                             m.group(3),
                                             m.group(5));
-                                    asyncTask.execute(message);
+
+                                    lineNotifyAsyncTask.execute(message);
+                                    paymentNotifyAsyncTask.execute("3", m.group(1), m.group(4), m.group(2), m.group(3), m.group(5));
                                 } else {
-                                    asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                                 }
                                 break;
                             default:
-                                asyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                                 break;
                         }
                     }
                 }
             }
         } else if ("android.intent.action.BATTERY_LOW".equals(intent.getAction())) {
-            asyncTask.execute("배터리 부족");
+            lineNotifyAsyncTask.execute("배터리 부족");
         } else if ("android.intent.action.BATTERY_OKAY".equals(intent.getAction())) {
-            asyncTask.execute("배터리 정상화");
+            lineNotifyAsyncTask.execute("배터리 정상화");
         } else if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
             Intent intentMainActivity = new Intent(context, MainActivity.class);
             intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intentMainActivity);
 
-            asyncTask.execute("부팅 완료");
+            lineNotifyAsyncTask.execute("부팅 완료");
         }
     }
 }
