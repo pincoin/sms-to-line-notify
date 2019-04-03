@@ -50,8 +50,7 @@ public class Receiver extends BroadcastReceiver {
 
                                 if (m.find()) {
                                     paymentNotifyAsyncTask.execute("0", m.group(1), m.group(2), m.group(3), m.group(4), m.group(5));
-                                } else {
-                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    return;
                                 }
                                 break;
                             case NONGHUP:
@@ -61,8 +60,7 @@ public class Receiver extends BroadcastReceiver {
 
                                 if (m.find()) {
                                     paymentNotifyAsyncTask.execute("1", m.group(3), m.group(4), m.group(1), m.group(2), m.group(5));
-                                } else {
-                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    return;
                                 }
                                 break;
                             case SHINHAN:
@@ -72,8 +70,7 @@ public class Receiver extends BroadcastReceiver {
 
                                 if (m.find()) {
                                     paymentNotifyAsyncTask.execute("2", m.group(1), m.group(5), m.group(2), m.group(3), m.group(4));
-                                } else {
-                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    return;
                                 }
                                 break;
                             case WOORI:
@@ -83,14 +80,11 @@ public class Receiver extends BroadcastReceiver {
 
                                 if (m.find()) {
                                     paymentNotifyAsyncTask.execute("3", m.group(1), m.group(4), m.group(2), m.group(3), m.group(5));
-                                } else {
-                                    lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
+                                    return;
                                 }
                                 break;
-                            default:
-                                lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
-                                break;
                         }
+                        lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
                     }
                 }
             }
