@@ -17,7 +17,6 @@ public class Receiver extends BroadcastReceiver {
     private static final String SHINHAN = "15778000";
     private static final String WOORI = "15885000";
 
-    private static final String MESSAGE_FORMAT = "[%s]\n일시: %s\n이름: %s\n입출: %s\n금액: %s\n잔액: %s";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -50,15 +49,6 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format(MESSAGE_FORMAT,
-                                            "국민",
-                                            m.group(1),
-                                            m.group(2),
-                                            m.group(3),
-                                            m.group(4),
-                                            m.group(5));
-
-                                    lineNotifyAsyncTask.execute(message);
                                     paymentNotifyAsyncTask.execute("0", m.group(1), m.group(2), m.group(3), m.group(4), m.group(5));
                                 } else {
                                     lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
@@ -70,15 +60,6 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format(MESSAGE_FORMAT,
-                                            "농협",
-                                            m.group(3),
-                                            m.group(4),
-                                            m.group(1),
-                                            m.group(2),
-                                            m.group(5));
-
-                                    lineNotifyAsyncTask.execute(message);
                                     paymentNotifyAsyncTask.execute("1", m.group(3), m.group(4), m.group(1), m.group(2), m.group(5));
                                 } else {
                                     lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
@@ -90,15 +71,6 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format(MESSAGE_FORMAT,
-                                            "신한",
-                                            m.group(1),
-                                            m.group(5),
-                                            m.group(2),
-                                            m.group(3),
-                                            m.group(4));
-
-                                    lineNotifyAsyncTask.execute(message);
                                     paymentNotifyAsyncTask.execute("2", m.group(1), m.group(5), m.group(2), m.group(3), m.group(4));
                                 } else {
                                     lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
@@ -110,15 +82,6 @@ public class Receiver extends BroadcastReceiver {
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
                                 if (m.find()) {
-                                    String message = String.format(MESSAGE_FORMAT,
-                                            "우리",
-                                            m.group(1),
-                                            m.group(4),
-                                            m.group(2),
-                                            m.group(3),
-                                            m.group(5));
-
-                                    lineNotifyAsyncTask.execute(message);
                                     paymentNotifyAsyncTask.execute("3", m.group(1), m.group(4), m.group(2), m.group(3), m.group(5));
                                 } else {
                                     lineNotifyAsyncTask.execute(smsMessage[0].getMessageBody().replace("[Web발신]", ""));
