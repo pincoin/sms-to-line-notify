@@ -16,6 +16,7 @@ public class Receiver extends BroadcastReceiver {
     private static final String NONGHUP = "15882100";
     private static final String SHINHAN = "15778000";
     private static final String WOORI = "15885000";
+    private static final String IBK = "15662566";
 
 
     @Override
@@ -80,6 +81,16 @@ public class Receiver extends BroadcastReceiver {
 
                                 if (m.find()) {
                                     paymentNotifyAsyncTask.execute("3", m.group(1), m.group(4), m.group(2), m.group(3), m.group(5));
+                                    return;
+                                }
+                                break;
+                            case IBK:
+                                pattern = "(\\d\\d/\\d\\d \\d\\d:\\d\\d)\\s(.*)[ ]+(.*)원\\s잔액[ ]+(.*)원\\s(.*)\\s(.*)\\s기업";
+                                r = Pattern.compile(pattern);
+                                m = r.matcher(smsMessage[0].getMessageBody());
+
+                                if (m.find()) {
+                                    paymentNotifyAsyncTask.execute("4", m.group(1), m.group(5), m.group(2), m.group(3), m.group(4));
                                     return;
                                 }
                                 break;
