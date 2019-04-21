@@ -1,4 +1,4 @@
-package com.hfad.broadcastsms;
+package kr.co.pincoin.broadcastsms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

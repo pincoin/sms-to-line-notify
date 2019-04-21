@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hfad.broadcastsms">
+    package="kr.co.pincoin.broadcastsms">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/pincoin_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="kr.co.pincoin.broadcastsms.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,7 +23,7 @@
         </activity>
 
         <receiver
-            android:name=".Receiver"
+            android:name="kr.co.pincoin.broadcastsms.Receiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="10000">

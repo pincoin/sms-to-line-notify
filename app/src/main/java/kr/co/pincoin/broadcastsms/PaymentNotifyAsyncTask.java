@@ -1,4 +1,4 @@
-package com.hfad.broadcastsms;
+package kr.co.pincoin.broadcastsms;
 
 import android.os.AsyncTask;
 import android.util.Log;
