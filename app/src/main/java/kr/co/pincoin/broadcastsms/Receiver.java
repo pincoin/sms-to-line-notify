@@ -85,7 +85,7 @@ public class Receiver extends BroadcastReceiver {
                                 }
                                 break;
                             case IBK:
-                                pattern = "(\\d\\d\\d\\d/\\d\\d/\\d\\d \\d\\d:\\d\\d)\\s(.*)[ ]+(.*)원\\s잔액[ ]+(.*)원\\s(.*)\\s(.*)\\s기업";
+                                pattern = "(\\d\\d\\d\\d/\\d\\d/\\d\\d \\d\\d:\\d\\d)\\s(.*)[ ]+(.*)원\\s잔액[ ]+(.*)원\\s(.*)";
                                 r = Pattern.compile(pattern);
                                 m = r.matcher(smsMessage[0].getMessageBody());
 
